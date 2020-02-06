@@ -8,11 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require("@angular/core");
 var EmployeeComponent = (function () {
     function EmployeeComponent() {
+        this.columnSpan = 2;
+        this.imagePath = 'Tom.png';
         this.firstName = 'Tom';
         this.lastName = 'Hopkins';
         this.gender = 'Male';
         this.age = 20;
+        this.showDetails = false;
     }
+    EmployeeComponent.prototype.toggleDetails = function () {
+        this.showDetails = !this.showDetails;
+    };
     return EmployeeComponent;
 }());
 EmployeeComponent = __decorate([

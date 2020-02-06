@@ -8,19 +8,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require("@angular/core");
 var AppComponent = (function () {
     function AppComponent() {
+        this.applyBoldClass = false;
+        this.applyItalicsClass = true;
+        this.classesToApply = 'italicsClass boldClass';
         this.pageHeader = 'Employee Details';
         this.badHtml = 'Hello <script>alert("Hacked");</script> World';
+        this.isBold = true;
+        this.fontSize = 15;
+        this.isItalic = true;
     }
+    AppComponent.prototype.addClasses = function () {
+        var classes = {
+            boldClass: this.applyBoldClass,
+            italicsClass: this.applyItalicsClass
+        };
+        return classes;
+    };
+    AppComponent.prototype.addStyles = function () {
+        var styles = {
+            'font-weight': this.isBold ? 'bold' : 'normal',
+            'font-style': this.isItalic ? 'italic' : 'normal',
+            'font-size.px': this.fontSize
+        };
+        return styles;
+    };
     return AppComponent;
 }());
 AppComponent = __decorate([
     core_1.Component({
         selector: 'my-app',
-        // template:`<div>
-        //             <h1>{{pageHeader}}</h1>
-        //             <my-employee></my-employee>
-        //           </div>`
-        template: '<div [innerHtml]="badHtml"></div>'
+        templateUrl: 'app/app.component.html'
     })
 ], AppComponent);
 exports.AppComponent = AppComponent;

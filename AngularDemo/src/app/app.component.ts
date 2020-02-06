@@ -2,13 +2,38 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'my-app',
-  // template:`<div>
-  //             <h1>{{pageHeader}}</h1>
-  //             <my-employee></my-employee>
-  //           </div>`
-  template: '<div [innerHtml]="badHtml"></div>'
+  templateUrl:'app/app.component.html'
 })
 export class AppComponent  { 
-  pageHeader:String = 'Employee Details'; 
+
+  applyBoldClass: boolean = false;
+  applyItalicsClass: boolean = true;
+  classesToApply:string='italicsClass boldClass';
+  pageHeader:string = 'Employee Details'; 
   badHtml:string= 'Hello <script>alert("Hacked");</script> World';
+
+  addClasses(){
+    let classes={
+      boldClass:this.applyBoldClass,
+      italicsClass:this.applyItalicsClass
+
+    }
+
+    return classes;
+  }
+
+
+  isBold: boolean = true;
+  fontSize: number = 15;
+  isItalic: boolean = true;
+
+  addStyles() {
+        let styles = {
+            'font-weight': this.isBold ? 'bold' : 'normal',
+            'font-style': this.isItalic ? 'italic' : 'normal',
+            'font-size.px': this.fontSize
+        };
+
+        return styles;
+    }
 }
