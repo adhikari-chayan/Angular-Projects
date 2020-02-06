@@ -11,7 +11,7 @@ export class AppComponent  {
   classesToApply:string='italicsClass boldClass';
   pageHeader:string = 'Employee Details'; 
   badHtml:string= 'Hello <script>alert("Hacked");</script> World';
-
+  userText: string = 'Pragim';
   addClasses(){
     let classes={
       boldClass:this.applyBoldClass,

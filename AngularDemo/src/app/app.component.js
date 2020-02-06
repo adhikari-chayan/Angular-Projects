@@ -13,6 +13,7 @@ var AppComponent = (function () {
         this.classesToApply = 'italicsClass boldClass';
         this.pageHeader = 'Employee Details';
         this.badHtml = 'Hello <script>alert("Hacked");</script> World';
+        this.userText = 'Pragim';
         this.isBold = true;
         this.fontSize = 15;
         this.isItalic = true;

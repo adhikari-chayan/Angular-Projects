@@ -1,0 +1,14 @@
+C:\MyStuff\Practice Projects\Angular\AngularDemo\Employee.Api\Employee.Api\bin\Debug\netcoreapp2.1\Employee.Api.deps.json
+C:\MyStuff\Practice Projects\Angular\AngularDemo\Employee.Api\Employee.Api\bin\Debug\netcoreapp2.1\Employee.Api.runtimeconfig.json
+C:\MyStuff\Practice Projects\Angular\AngularDemo\Employee.Api\Employee.Api\bin\Debug\netcoreapp2.1\Employee.Api.runtimeconfig.dev.json
+C:\MyStuff\Practice Projects\Angular\AngularDemo\Employee.Api\Employee.Api\bin\Debug\netcoreapp2.1\Employee.Api.dll
+C:\MyStuff\Practice Projects\Angular\AngularDemo\Employee.Api\Employee.Api\bin\Debug\netcoreapp2.1\Employee.Api.pdb
+C:\MyStuff\Practice Projects\Angular\AngularDemo\Employee.Api\Employee.Api\obj\Debug\netcoreapp2.1\Employee.Api.csprojAssemblyReference.cache
+C:\MyStuff\Practice Projects\Angular\AngularDemo\Employee.Api\Employee.Api\obj\Debug\netcoreapp2.1\Employee.Api.csproj.CoreCompileInputs.cache
+C:\MyStuff\Practice Projects\Angular\AngularDemo\Employee.Api\Employee.Api\obj\Debug\netcoreapp2.1\Employee.Api.RazorAssemblyInfo.cache
+C:\MyStuff\Practice Projects\Angular\AngularDemo\Employee.Api\Employee.Api\obj\Debug\netcoreapp2.1\Employee.Api.RazorAssemblyInfo.cs
+C:\MyStuff\Practice Projects\Angular\AngularDemo\Employee.Api\Employee.Api\obj\Debug\netcoreapp2.1\Employee.Api.AssemblyInfoInputs.cache
+C:\MyStuff\Practice Projects\Angular\AngularDemo\Employee.Api\Employee.Api\obj\Debug\netcoreapp2.1\Employee.Api.AssemblyInfo.cs
+C:\MyStuff\Practice Projects\Angular\AngularDemo\Employee.Api\Employee.Api\obj\Debug\netcoreapp2.1\Employee.Api.RazorTargetAssemblyInfo.cache
+C:\MyStuff\Practice Projects\Angular\AngularDemo\Employee.Api\Employee.Api\obj\Debug\netcoreapp2.1\Employee.Api.dll
+C:\MyStuff\Practice Projects\Angular\AngularDemo\Employee.Api\Employee.Api\obj\Debug\netcoreapp2.1\Employee.Api.pdb
