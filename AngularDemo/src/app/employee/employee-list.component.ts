@@ -1,12 +1,17 @@
 import { Component, OnInit } from "@angular/core";
 import { EmployeeService } from "./employee.service";
 import { IEmployee } from "./employee";
+import { UserPreferenceService } from "../Others/user-preferences.service";
+import 'rxjs/add/operator/retrywhen';
+import 'rxjs/add/operator/delay';
+import 'rxjs/add/operator/scan';
+import { ISubscription } from "rxjs/Subscription";
 
 @Component({
     selector:'list-employee',
     templateUrl:'app/employee/employee-list.component.html',
-    styleUrls:['app/employee/employee-list.component.css'],
-    providers:[EmployeeService]
+    styleUrls:['app/employee/employee-list.component.css']
+    
 })
 export class EmployeeListComponent implements OnInit{
     employees: IEmployee[];
@@ -22,11 +27,28 @@ export class EmployeeListComponent implements OnInit{
     // function in the subscribe method sets this property to
     // "Problem with the service. Please try again after sometime"
     statusMessage:string='Loading data. Please wait...';
+    retryCount: number = 1;
 
-    constructor(private _employeeService: EmployeeService) {
+    // Create a class property of type ISubscription
+    // The ISubscription interface has closed property
+    // The ngIf directive in the HTML binds to this property
+    // Go to the difinition of ISubscription interface to
+    // see the closed property
+    subscription: ISubscription;
+
+    constructor(private _employeeService: EmployeeService,private _userPreferencesService:UserPreferenceService ) {
     }
 
-    getEmployees(): void {
+
+    get colour(): string {
+        return this._userPreferencesService.colourPreference;
+    }
+    
+    set colour(value: string) {
+        this._userPreferencesService.colourPreference = value;
+    }
+
+    refresh(): void {
         this.employees = [
             {
                 code: 'emp101', name: 'Tom', gender: 'Male',
@@ -56,13 +78,31 @@ export class EmployeeListComponent implements OnInit{
     }
 
     ngOnInit(){
-       this._employeeService.getEmployees().subscribe(
-                                            employeeData=>this.employees=employeeData,
-                                            error => {
-                                                this.statusMessage =
-                                                    'Problem with the service. Please try again after sometime';
-                                            }
-                                            );
+       
+        // Use the subscription property created above to hold on to the
+        // subscription.We use this object in the onCancelButtonClick()
+        // method to unsubscribe and cancel the request
+        this.subscription = this._employeeService.getEmployees()
+                                // Retry 5 times maximum with a delay of 1 second
+                                // between each retry attempt
+                                .retryWhen((err) => {
+                                    return err.scan((retryCount, val) => {
+                                        retryCount += 1;
+                                        if (retryCount < 6) {
+                                            this.statusMessage = 'Retrying...Attempt #' + retryCount;
+                                            return retryCount;
+                                        }
+                                        else {
+                                            throw (err);
+                                        }
+                                    }, 0).delay(1000)
+                                })
+                                .subscribe(
+                                        employeeData=>this.employees=employeeData,
+                                        error => {
+                                            this.statusMessage ='Problem with the service. Please try again after sometime';
+                                        }
+                                );
     }
 
     getTotalEmployeesCount():number{
@@ -80,5 +120,15 @@ export class EmployeeListComponent implements OnInit{
     
     onEmployeeCountRadioButtonChange(selectedRadioButtonValue:string):void{
         this.selectedEmployeeCountRadioButton=selectedRadioButtonValue;
+    }
+
+    // This method is bound to the click event of the "Cancel Request" button
+    // Notice we are using the unsubscribe() method of the subscription object
+    // to unsubscribe from the observable to cancel the request. We are also
+    // setting the status message property of the class to "Request Cancelled"
+    // This message is displayed to the user to indicate that the request is cancelled
+    onCancelButtonClick(): void {
+        this.statusMessage = 'Request cancelled';
+        this.subscription.unsubscribe();
     }
 }

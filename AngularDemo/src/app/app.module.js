@@ -18,6 +18,8 @@ var employee_count_component_1 = require("./employee/employee-count.component");
 var simple_component_1 = require("./Others/simple.component");
 var home_component_1 = require("./home/home.component");
 var page_not_found_component_1 = require("./Others/page-not-found.component");
+var employee_service_1 = require("./employee/employee.service");
+var test_module_1 = require("./test.module");
 // Routes is an array of Route objects
 // Each route maps a URL path to a component
 // The 3rd route specifies the route to redirect to if the path
@@ -27,6 +29,7 @@ var page_not_found_component_1 = require("./Others/page-not-found.component");
 var appRoutes = [
     { path: 'home', component: home_component_1.HomeComponent },
     { path: 'employees', component: employee_list_component_1.EmployeeListComponent },
+    { path: 'employees/:code', component: employee_component_1.EmployeeComponent },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: '**', component: page_not_found_component_1.PageNotFoundComponent }
 ];
@@ -37,9 +40,10 @@ var AppModule = (function () {
 }());
 AppModule = __decorate([
     core_1.NgModule({
-        imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpModule, router_1.RouterModule.forRoot(appRoutes)],
+        imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpModule, test_module_1.TestModule, router_1.RouterModule.forRoot(appRoutes)],
         declarations: [app_component_1.AppComponent, employee_component_1.EmployeeComponent, employee_list_component_1.EmployeeListComponent, employee_title_pipe_1.EmployeeTitlePipe, employee_count_component_1.EmployeeCountComponent, simple_component_1.SimpleComponent, home_component_1.HomeComponent, page_not_found_component_1.PageNotFoundComponent],
-        bootstrap: [app_component_1.AppComponent]
+        bootstrap: [app_component_1.AppComponent],
+        providers: [employee_service_1.EmployeeService]
     })
 ], AppModule);
 exports.AppModule = AppModule;

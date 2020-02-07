@@ -10,9 +10,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require("@angular/core");
 var employee_service_1 = require("./employee.service");
+var user_preferences_service_1 = require("../Others/user-preferences.service");
+require("rxjs/add/operator/retrywhen");
+require("rxjs/add/operator/delay");
+require("rxjs/add/operator/scan");
 var EmployeeListComponent = (function () {
-    function EmployeeListComponent(_employeeService) {
+    function EmployeeListComponent(_employeeService, _userPreferencesService) {
         this._employeeService = _employeeService;
+        this._userPreferencesService = _userPreferencesService;
         // This property keeps track of which radio button is selected
         // We have set the default value to All, so all the employees
         // are displayed in the table by default
@@ -23,8 +28,19 @@ var EmployeeListComponent = (function () {
         // function in the subscribe method sets this property to
         // "Problem with the service. Please try again after sometime"
         this.statusMessage = 'Loading data. Please wait...';
+        this.retryCount = 1;
     }
-    EmployeeListComponent.prototype.getEmployees = function () {
+    Object.defineProperty(EmployeeListComponent.prototype, "colour", {
+        get: function () {
+            return this._userPreferencesService.colourPreference;
+        },
+        set: function (value) {
+            this._userPreferencesService.colourPreference = value;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    EmployeeListComponent.prototype.refresh = function () {
         this.employees = [
             {
                 code: 'emp101', name: 'Tom', gender: 'Male',
@@ -53,9 +69,24 @@ var EmployeeListComponent = (function () {
     };
     EmployeeListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this._employeeService.getEmployees().subscribe(function (employeeData) { return _this.employees = employeeData; }, function (error) {
-            _this.statusMessage =
-                'Problem with the service. Please try again after sometime';
+        // Use the subscription property created above to hold on to the
+        // subscription.We use this object in the onCancelButtonClick()
+        // method to unsubscribe and cancel the request
+        this.subscription = this._employeeService.getEmployees()
+            .retryWhen(function (err) {
+            return err.scan(function (retryCount, val) {
+                retryCount += 1;
+                if (retryCount < 6) {
+                    _this.statusMessage = 'Retrying...Attempt #' + retryCount;
+                    return retryCount;
+                }
+                else {
+                    throw (err);
+                }
+            }, 0).delay(1000);
+        })
+            .subscribe(function (employeeData) { return _this.employees = employeeData; }, function (error) {
+            _this.statusMessage = 'Problem with the service. Please try again after sometime';
         });
     };
     EmployeeListComponent.prototype.getTotalEmployeesCount = function () {
@@ -70,16 +101,24 @@ var EmployeeListComponent = (function () {
     EmployeeListComponent.prototype.onEmployeeCountRadioButtonChange = function (selectedRadioButtonValue) {
         this.selectedEmployeeCountRadioButton = selectedRadioButtonValue;
     };
+    // This method is bound to the click event of the "Cancel Request" button
+    // Notice we are using the unsubscribe() method of the subscription object
+    // to unsubscribe from the observable to cancel the request. We are also
+    // setting the status message property of the class to "Request Cancelled"
+    // This message is displayed to the user to indicate that the request is cancelled
+    EmployeeListComponent.prototype.onCancelButtonClick = function () {
+        this.statusMessage = 'Request cancelled';
+        this.subscription.unsubscribe();
+    };
     return EmployeeListComponent;
 }());
 EmployeeListComponent = __decorate([
     core_1.Component({
         selector: 'list-employee',
         templateUrl: 'app/employee/employee-list.component.html',
-        styleUrls: ['app/employee/employee-list.component.css'],
-        providers: [employee_service_1.EmployeeService]
+        styleUrls: ['app/employee/employee-list.component.css']
     }),
-    __metadata("design:paramtypes", [employee_service_1.EmployeeService])
+    __metadata("design:paramtypes", [employee_service_1.EmployeeService, user_preferences_service_1.UserPreferenceService])
 ], EmployeeListComponent);
 exports.EmployeeListComponent = EmployeeListComponent;
 //# sourceMappingURL=employee-list.component.js.map

@@ -21,7 +21,11 @@
     <tbody>
         <ng-container *ngFor="let employee of employees; trackBy:trackByEmpCode;let i=index;let isFirst = first; let isLast = last; let isEven = even; let isOdd = odd" >
             <tr *ngIf="selectedEmployeeCountRadioButton=='All' ||  selectedEmployeeCountRadioButton==employee.gender">
-                <td>{{employee.code | uppercase}}</td>
+                <td>
+                    <a [routerLink]="['/employees',employee.code]">
+                        {{employee.code | uppercase}}
+                    </a>    
+                </td>
                 <td>{{employee.name | employeeTitle:employee.gender}}</td>
                 <td>{{employee.gender}}</td>
                 <td>{{employee.annualSalary|currency:'USD':true:'1.3-3'}}</td>
@@ -51,4 +55,14 @@
     </tbody>
 </table>
 <br />
-<button (click)='getEmployees()'>Refresh Employees</button>
+<button (click)='refresh()'>Refresh Employees</button>
+<br/><br/>
+<div style="margin-top:5px" *ngIf="!subscription.closed">
+    <input type="button" class="btn btn-primary" value="Cancel Request"
+           (click)="onCancelButtonClick()" />
+</div>
+<br/><br/>
+<div>
+    Colour Preference :
+    <input type='text' [(ngModel)]='colour' [style.background]="colour"/>
+</div>
